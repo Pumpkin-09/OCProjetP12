@@ -22,5 +22,4 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
 # Configurer la session
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Déclarer une base pour les modèles ORM
 Base = declarative_base()
