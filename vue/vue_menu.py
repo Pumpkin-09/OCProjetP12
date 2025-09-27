@@ -2,6 +2,10 @@ import re
 from vue.vue_verification import clear_terminal
 
 
+"""
+faire un dico et des boucle pour avoir un truc dynamique plutot que d'avoir des copier coller
+"""
+
 def menu():
     while True:
 
