@@ -1,13 +1,15 @@
-from database import Base, engine
+from database import Base
 from sqlalchemy import Column, Integer, String, Date, DateTime, Float, Boolean, ForeignKey, Enum
-from sqlalchemy.orm import relationship
+
+'''from sqlalchemy.orm import relationship'''
+
 from sqlalchemy.sql import func
 import enum
 
 
 class MyEnum(enum.Enum):
     gestion = "equipe gestion"
-    commertial = "equipe commercial"
+    commercial = "equipe commercial"
     support = "equipe support"
 
 
@@ -55,7 +57,7 @@ class Evenement(Base):
     id_collaborateur = Column(Integer, ForeignKey("collaborateur.id"), nullable=False)
     event_date_start = Column(Date, nullable=False)
     event_date_stop = Column(Date, nullable=False)
-    id_support_contrat = Column(Integer, ForeignKey("collaborateur.id"), nullable=False)
+    id_support_contrat = Column(Integer, ForeignKey("collaborateur.id"), nullable=True)
     location = Column(String(300), nullable=True)
     attente = Column(Integer, nullable=True)
     note = Column(String(500), nullable=True)

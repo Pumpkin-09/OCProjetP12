@@ -1,10 +1,8 @@
 import re
-from vue.vue_verification import clear_terminal
+from vue.vue import clear_terminal, MENUS
 
 
-"""
-faire un dico et des boucle pour avoir un truc dynamique plutot que d'avoir des copier coller
-"""
+
 
 def menu():
     while True:
@@ -167,7 +165,7 @@ def menu_collaborateur():
 
         if choix == "4":
             clear_terminal()
-            print("Suipprimer un collaborateur:\n")
+            print("Supprimer un collaborateur:\n")
             return choix
 
         if choix == "0":
@@ -176,3 +174,16 @@ def menu_collaborateur():
 
         else:
             print("\nChoix invalide, Réessayez.")
+
+
+def afficher_menu(menu_config):
+    titre = menu_config["titre"]
+    options = menu_config("options")
+
+
+
+
+
+
+
+

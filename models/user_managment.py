@@ -1,6 +1,7 @@
 import bcrypt
 from database import SessionLocal
-from vue.vue_connexion import simple_print
+from vue.vue import simple_print
+from models.models_permission import PERMISSIONS
 
 
 def hashing_password(password):
@@ -17,22 +18,23 @@ def verification_password(hash_password, user_password):
     return result
 
 
-def verification_role(role_required, user_role):
+def verification_role(action, user_role):
     authorization_role = False
 
-    if role_required == user_role:
-        authorization_role = True
+    if action not in PERMISSIONS:
+        print(f"Erreur: Action '{action}' inconnue")
+        return False
+
+    if user_role in PERMISSIONS[action]:
+        return True
 
     else:
-        word = f"Accès refuser, votre role est {user_role} et l'operation nécessite le role de {role_required}"
-        simple_print(word)
-    
-    return authorization_role
+        simple_print(f"Accès refuser, votre role de {user_role} ne permet pas l'operation.")
+        return False
 
 
 def user_deconnexion():
-    word = "au revoir"
-    simple_print(word)
+    simple_print("au revoir")
     connexion = False
     SessionLocal.exit()
     return connexion
