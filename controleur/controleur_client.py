@@ -1,8 +1,9 @@
 from models.models import Client
-from models.user_managment import verification_role
-from vue.vue import simple_print
+from models.models_managment import verification_role
+from vue.vue import simple_print, vue_affichage_informations
 from sqlalchemy import func
-from vue.vue_client import vue_recherche_client, vue_creation_client, vue_affichage_client, vue_modification_client
+from vue.vue_client import vue_recherche_client, vue_creation_client, vue_modification_client
+from models.models import EnumPermission as EP
 
 
 def recherche_client(session):
@@ -12,7 +13,7 @@ def recherche_client(session):
 
 
 def creation_client(collaborateur, session):
-    action = "creer client"
+    action = EP.creer_client
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
@@ -35,29 +36,35 @@ def creation_client(collaborateur, session):
 
         except Exception as e:
             session.rollback()
-            simple_print(f"Erreur lors de la création:/n - {e}")
+            simple_print(f"Erreur lors de la création:\n - {e}")
 
 
 def afficher_mes_clients(collaborateur, session):
-    action = "affichage client"
+    action = EP.afficher_client
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
         clients = session.query(Client).filter(Client.id_collaborateur == collaborateur.id).all()
-        vue_affichage_client(clients)
+        if len(clients) > 0:
+            vue_affichage_informations(clients)
+        else:
+            simple_print("Aucun clients.")
 
 
 def afficher_tous_clients(collaborateur, session):
-    action = "affichage client"
+    action = EP.afficher_client
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
         clients = session.query(Client).all()
-        vue_affichage_client(clients)
+        if len(clients) > 0:
+            vue_affichage_informations(clients)
+        else:
+            simple_print("Aucun clients.")
 
 
 def modification_client(collaborateur, session):
-    action = "modifier client"
+    action = EP.modifier_client
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
@@ -69,16 +76,15 @@ def modification_client(collaborateur, session):
         try:
             modification = vue_modification_client(client)
 
-            Client(
-                nom_complet = modification["nom"],
-                email = modification["email"],
-                telephone = modification["telephone"],
-                nom_entreprise = modification["entreprise"],
-                id_collaborateur = modification["collaborateur"]
-            )
+            client.nom_complet = modification["nom"]
+            client.email = modification["email"]
+            client.telephone = modification["telephone"]
+            client.nom_entreprise = modification["entreprise"]
+            client.id_collaborateur = modification["collaborateur"]
+
             session.commit()
             simple_print(f"Client '{modification['nom']}' modiffié avec succès")
 
         except Exception as e:
             session.rollback()
-            simple_print(f"Erreur lors de la modification:/n - {e}")
+            simple_print(f"Erreur lors de la modification:\n - {e}")

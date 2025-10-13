@@ -1,4 +1,5 @@
 import datetime
+import re
 
 
 
@@ -59,11 +60,30 @@ def simple_print(word):
     print(word)
 
 
+def choix_modification():
+    while True:
+        choix = input(" Voulez vous le modifier?\n 0. Non\n 1. Oui\n - ")
+        if choix == "0":
+            return False
+        if choix =="1":
+            return True
+        else:
+            print("Choix invalide, veuillez saisir 0 ou 1")
+
+
 def input_user_identifient():
     identifient = input("veuiller saisir votre identifient:/n - ")
     password = input("Veuillez saisir votre mot de passe:/n - ")
 
     return [identifient, password]
+
+
+def vue_affichage_informations(objets):
+    iteration = 0
+    for objet in objets:
+        iteration += 1
+        print(f"\n\n____________{iteration}).")
+        print(objet)
 
 
 def clear_terminal():
@@ -89,3 +109,10 @@ def verification_date(date_str):
 
     except ValueError:
         return False
+
+
+def demander_modification(label, valeur_actuelle, question, validation):
+    print(f"\n{label} actuel: {valeur_actuelle}")
+    if choix_modification():
+        return verification_input(question, validation)
+    return valeur_actuelle

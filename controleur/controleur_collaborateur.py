@@ -1,8 +1,9 @@
 from models.models import Collaborateur
-from models.user_managment import verification_role
-from vue.vue import simple_print
+from models.models_managment import verification_role
+from vue.vue import simple_print, vue_affichage_informations
 from sqlalchemy import func
-from vue.vue_collaborateur import vue_recherche_collaborateur, vue_creation_collaborateur, vue_affichage_collaborateur, vue_modification_collaborateur
+from vue.vue_collaborateur import vue_recherche_collaborateur, vue_creation_collaborateur, vue_modification_collaborateur
+from models.models import EnumPermission as EP
 
 
 def recherche_collaborateur(session):
@@ -12,7 +13,7 @@ def recherche_collaborateur(session):
 
 
 def creation_collaborateur(collaborateur, session):
-    action = "creer collaborateur"
+    action = EP.creer_collaborateur
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
@@ -38,16 +39,19 @@ def creation_collaborateur(collaborateur, session):
 
 
 def afficher_tous_collaborateur(collaborateur, session):
-    action = "affichage collaborateur"
+    action = EP.afficher_collaborateurs
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
         collaborateurs = session.query(Collaborateur).all()
-        vue_affichage_collaborateur(collaborateurs)
+        if len(collaborateurs) > 0:
+            vue_affichage_informations(collaborateurs)
+        else:
+            simple_print("Aucun collaborateur.")
 
 
 def modification_collaborateur(collaborateur, session):
-    action = "modifier collaborateur"
+    action = EP.modifier_collaborateur
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
@@ -59,15 +63,37 @@ def modification_collaborateur(collaborateur, session):
         try:
             modification = vue_modification_collaborateur(collaborateur)
 
-            Collaborateur(
-                nom_complet = modification["nom"],
-                email = modification["email"],
-                password = modification["password"],
-                role = modification["role"]
-            )
+            collaborateur.nom_complet = modification["nom"]
+            collaborateur.email = modification["email"]
+            collaborateur.password = modification["password"]
+            collaborateur.role = modification["role"]
+
             session.commit()
             simple_print(f"Collaborateur '{modification['nom']}' modiffié avec succès")
 
         except Exception as e:
             session.rollback()
             simple_print(f"Erreur lors de la modification:/n - {e}")
+
+
+def suppretion_collaborateur(collaborateur, session):
+    action = EP.supprimer_collaborateur
+    user_role = collaborateur.role
+    authorisation = verification_role(action, user_role)
+    if authorisation:
+        delete_collaborateur = recherche_collaborateur()
+        if delete_collaborateur is None:
+            simple_print("Ce collaborateur n'existe pas.")
+            return
+        if delete_collaborateur.id == collaborateur.id:
+            simple_print("Vous ne pouvez pas supprimer votre propre compte")
+            return
+        
+        try:
+            session.delete(delete_collaborateur)
+            session.commit()
+            simple_print(f"Collaborateur '{delete_collaborateur['nom']}' supprimé avec succès")
+
+        except Exception as e:
+            session.rollback()
+            simple_print(f"Erreur lors de la suppression:/n - {e}")

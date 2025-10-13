@@ -40,3 +40,6 @@ def vue_modification_collaborateur():
 
 def vue_suppretion_collaborateur():
     pass
+
+def vue_recherche_collaborateur():
+    pass
