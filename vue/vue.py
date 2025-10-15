@@ -1,8 +1,4 @@
 import datetime
-import re
-
-
-
 
 
 MENUS = {
@@ -79,10 +75,8 @@ def input_user_identifient():
 
 
 def vue_affichage_informations(objets):
-    iteration = 0
     for objet in objets:
-        iteration += 1
-        print(f"\n\n____________{iteration}).")
+        print(f"\n\n------------")
         print(objet)
 
 
@@ -116,3 +110,16 @@ def demander_modification(label, valeur_actuelle, question, validation):
     if choix_modification():
         return verification_input(question, validation)
     return valeur_actuelle
+
+
+def vue_choix(nombre_choix):
+    while True:
+        print("Pour quiter, veuillez saisir 0:")
+        choix_str = input(" - ")
+        choix = int(choix_str)
+        if choix == 0:
+            return None
+        if choix in range(1 in nombre_choix +1):
+            return choix
+        else:
+            print(f"Choix invalide, veuillez saisir un nombre compris entre 0 et {nombre_choix}")

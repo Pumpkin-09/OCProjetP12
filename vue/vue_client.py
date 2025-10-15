@@ -1,10 +1,12 @@
-from vue.vue_menu import menu
-from vue.vue import verification_input, choix_modification, clear_terminal, demander_modification
+from vue.vue import verification_input, clear_terminal, demander_modification
 import re
 
 
 def vue_recherche_client():
-    pass
+    clear_terminal()
+    print("Veuillez saisir le nom et prénom du client à chercer:")
+    recherche_client = verification_input(" - ", lambda nom: re.match(r"^[a-zA-Z\s]{2,150}$", nom))
+    return recherche_client
 
 
 def vue_creation_client():
@@ -47,7 +49,7 @@ def vue_modification_client(client):
         lambda entreprise: entreprise != ""
     )
 
-    collaborateur = demander_modification(
+    id_collaborateur = demander_modification(
         "Collaborateur",
         client.id_collaborateur,
         "Veuillez saisir l'ID du collaborateur:\n - ",
@@ -63,8 +65,3 @@ def vue_modification_client(client):
         }
 
     return infos_client
-
-
-
-
-

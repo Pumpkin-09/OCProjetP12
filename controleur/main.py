@@ -1,5 +1,5 @@
 from database import SessionLocal
-from models.user_managment import user_deconnexion, verification_password, verification_role
+from models.models_managment import user_deconnexion, verification_password, verification_role
 from models.models import Collaborateur, Client, Evenement
 from vue.vue import simple_print, input_user_identifient
 from vue.vue_client import vue_creation_client

@@ -1,5 +1,5 @@
 from models.models import Collaborateur
-from models.models_managment import verification_role
+from models.models_managment import verification_role, hashing_password
 from vue.vue import simple_print, vue_affichage_informations
 from sqlalchemy import func
 from vue.vue_collaborateur import vue_recherche_collaborateur, vue_creation_collaborateur, vue_modification_collaborateur
@@ -55,18 +55,19 @@ def modification_collaborateur(collaborateur, session):
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
-        collaborateur = recherche_collaborateur()
-        if collaborateur is None:
+        collaborateur_modifier = recherche_collaborateur()
+        if collaborateur_modifier is None:
             simple_print("Ce collaborateur n'existe pas.")
             return
 
         try:
-            modification = vue_modification_collaborateur(collaborateur)
+            modification = vue_modification_collaborateur(collaborateur_modifier)
+            if collaborateur_modifier.password != modification["password"]:
+                collaborateur_modifier.password = hashing_password(modification["password"])
 
-            collaborateur.nom_complet = modification["nom"]
-            collaborateur.email = modification["email"]
-            collaborateur.password = modification["password"]
-            collaborateur.role = modification["role"]
+            collaborateur_modifier.nom_complet = modification["nom"]
+            collaborateur_modifier.email = modification["email"]
+            collaborateur_modifier.role = modification["role"]
 
             session.commit()
             simple_print(f"Collaborateur '{modification['nom']}' modiffié avec succès")

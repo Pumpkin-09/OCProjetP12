@@ -6,12 +6,6 @@ from vue.vue_client import vue_recherche_client, vue_creation_client, vue_modifi
 from models.models import EnumPermission as EP
 
 
-def recherche_client(session):
-    client_chercher = vue_recherche_client()
-    client = session.query(Client).filter(func.lower(Client.nom_complet) == client_chercher.lower()).first()
-    return client
-
-
 def creation_client(collaborateur, session):
     action = EP.creer_client
     user_role = collaborateur.role
@@ -63,15 +57,22 @@ def afficher_tous_clients(collaborateur, session):
             simple_print("Aucun clients.")
 
 
+def recherche_client(session):
+    client_chercher = vue_recherche_client()
+    client = session.query(Client).filter(func.lower(Client.nom_complet) == client_chercher.lower()).first()
+    if client is None:
+        simple_print("Ce client n'existe pas.")
+        return None
+    else:
+        return client
+
+
 def modification_client(collaborateur, session):
     action = EP.modifier_client
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
-        client = recherche_client()
-        if client is None:
-            simple_print("Ce client n'existe pas.")
-            return
+        client = recherche_client(session)
 
         try:
             modification = vue_modification_client(client)
