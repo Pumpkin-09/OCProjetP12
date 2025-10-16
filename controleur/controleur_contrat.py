@@ -1,8 +1,7 @@
-from models.models import Contrat, Client
-from models.models_managment import verification_role
+from models.models import Contrat
+from models.models_managment import verification_role, verification_type
 from models.models import EnumPermission as EP
 from controleur.controleur_client import recherche_client
-from sqlalchemy import func
 from controleur_client import recherche_client
 from vue.vue import simple_print, vue_affichage_informations
 from vue.vue_contrat import vue_choix_recherche_contrat, vue_creation_contrat, vue_modification_contrat, vue_choix_contrat, vue_filtre_contrat
@@ -19,9 +18,9 @@ def creation_contrat(collaborateur, session):
         try:
             nouveau_contrat = Contrat(
                 id_client = client.id,
-                id_collaborateur = infos_contrat["id collaborateur"],
-                montant_total = infos_contrat["montant"],
-                reste_a_payer = infos_contrat["reste_a_payer"],
+                id_collaborateur = verification_type(infos_contrat["id collaborateur"]),
+                montant_total = verification_type(infos_contrat["montant"]),
+                reste_a_payer = verification_type(infos_contrat["reste_a_payer"]),
                 status_contrat = infos_contrat["statu du contrat"]
             )
             session.add(nouveau_contrat)
@@ -33,30 +32,6 @@ def creation_contrat(collaborateur, session):
             simple_print(f"Erreur lors de la création:/n - {e}")
 
 
-def afficher_mes_contrats(collaborateur, session):
-    action = EP.afficher_contrat
-    user_role = collaborateur.role
-    authorisation = verification_role(action, user_role)
-    if authorisation:
-        contrats = session.query(Contrat).filter(Contrat.id_collaborateur == collaborateur.id).all()
-        if len(contrats) > 0:
-            vue_affichage_informations(contrats)
-        else:
-            simple_print("Aucun contrat")
-
-
-def afficher_tous_contrats(collaborateur, session):
-    action = EP.afficher_contrat
-    user_role = collaborateur.role
-    authorisation = verification_role(action, user_role)
-    if authorisation:
-        contrats = session.query(Contrat).all()
-        if len(contrats) > 0:
-            vue_affichage_informations(contrats)
-        else:
-            simple_print("Aucun contrat")
-
-
 def filtre_afficher_contrats(collaborateur, session):
     action = EP.afficher_contrat
     user_role = collaborateur.role
@@ -64,14 +39,20 @@ def filtre_afficher_contrats(collaborateur, session):
     if authorisation:
         choix_contrat = vue_filtre_contrat()
         if choix_contrat == 1:
-            contrats = session.query(Contrat).filter(Contrat.reste_a_payer > 0).all()
+            contrats = session.query(Contrat).all()
         if choix_contrat == 2:
+            contrats = session.query(Contrat).filter(Contrat.id_collaborateur == collaborateur.id).all()
+        if choix_contrat == 3:
+            contrats = session.query(Contrat).filter(Contrat.reste_a_payer > 0).all()
+        if choix_contrat == 4:
             contrats = session.query(Contrat).filter(Contrat.status_contrat == False).all()
+        if choix_contrat == None:
+            return
 
-        if len(contrats) > 0:
+        if len(contrats):
             vue_affichage_informations(contrats)
         else:
-            simple_print("Aucun contrat")
+            simple_print("Aucun contrat correspondant.")
 
 
 def modification_contrat(collaborateur, session):
@@ -106,10 +87,10 @@ def modification_contrat(collaborateur, session):
         try:
             modification = vue_modification_contrat(contrat)
 
-            contrat.id_client = modification["id_client"]
-            contrat.id_collaborateur = modification["id_collaborateur"]
-            contrat.montant_total = modification["montant_total"]
-            contrat.reste_a_payer = modification["reste_a_payer"]
+            contrat.id_client = verification_type(modification["id_client"])
+            contrat.id_collaborateur = verification_type(modification["id_collaborateur"])
+            contrat.montant_total = verification_type(modification["montant_total"])
+            contrat.reste_a_payer = verification_type(modification["reste_a_payer"])
             contrat.status_contrat = modification["status_contrat"]
 
             session.commit()

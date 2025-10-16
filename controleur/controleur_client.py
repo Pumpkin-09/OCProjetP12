@@ -1,5 +1,5 @@
 from models.models import Client
-from models.models_managment import verification_role
+from models.models_managment import verification_role, verification_type
 from vue.vue import simple_print, vue_affichage_informations
 from sqlalchemy import func
 from vue.vue_client import vue_recherche_client, vue_creation_client, vue_modification_client
@@ -81,7 +81,7 @@ def modification_client(collaborateur, session):
             client.email = modification["email"]
             client.telephone = modification["telephone"]
             client.nom_entreprise = modification["entreprise"]
-            client.id_collaborateur = modification["collaborateur"]
+            client.id_collaborateur = verification_type(modification["collaborateur"])
 
             session.commit()
             simple_print(f"Client '{modification['nom']}' modiffié avec succès")

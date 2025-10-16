@@ -33,6 +33,13 @@ def verification_role(action, user_role):
         return False
 
 
+def verification_type(valeur):
+    if type(valeur) != int:
+        return int(valeur)
+    else:
+        return valeur
+
+
 def user_deconnexion():
     simple_print("au revoir")
     connexion = False

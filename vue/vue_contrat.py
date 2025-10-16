@@ -1,5 +1,13 @@
-from vue.vue import verification_input, clear_terminal, demander_modification, vue_affichage_informations, vue_choix, choix_modification
 import re
+from vue.vue import(
+                    verification_input,
+                    clear_terminal,
+                    demander_modification,
+                    vue_affichage_informations,
+                    vue_choix,
+                    choix_modification
+                    )
+
 
 
 def vue_choix_recherche_contrat():
@@ -99,6 +107,8 @@ def vue_choix_contrat(contrats):
 
 
 def vue_filtre_contrat():
-    print("Pour afficher les contrats non signer, veuillez saisir 1\n")
-    print("Pour afficher les contrats non payés, veuillez saisir 2\n")
-    return vue_choix(2)
+    print("Pour afficher tous les contrats, veuillez saisir 1\n")
+    print("Pour afficher vos contrats, veuillez saisir 2\n")
+    print("Pour afficher les contrats non signer, veuillez saisir 3\n")
+    print("Pour afficher les contrats non payés, veuillez saisir 4\n")
+    return vue_choix(4)
