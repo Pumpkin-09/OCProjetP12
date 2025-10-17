@@ -33,19 +33,9 @@ def vue_creation_evenement():
     print("Veuillez saisir le nombre de personne attendu à l'événement:")
     infos_evenement["attente"] = verification_input(" - ", lambda attente: re.match(r"^\d+$", attente))
 
-    choix_note = input("Voulez-vous ajouter une remarque pour cet événement?\nSaisissez Oui ou Non\n")
-    if re.match(r"^OUI$", choix_note, re.I):
-        notes = []
-        print("Pour allez à la ligne pressez une fois \"Entrée\".\nPour quitter, presser deux fois \"Entrée\".")
-        while True:
-            note = input("\nSaissisez vos notes pour cet événement:\n - ")
-            if note == "":
-                break
-            notes.append(note)
-    else:
-        notes = ["Aucune remarque"]
-    infos_evenement["notes"] = notes
-
+    print("Veuillez saisir une ou plusieurs remarques pour l'événement:")
+    infos_evenement["note"] = verification_input(" - ", lambda note: re.match(r"^.{2,500}$", note))
+    
     return infos_evenement
 
 
@@ -99,16 +89,12 @@ def vue_modification_evenement(evenement):
         lambda attente: re.match(r"^\d+$", attente)
     )
 
-    print(f"Note acctuelle:\n{evenement.note}")
-    choix_note = input("Voulez-vous rajouter une remarque pour cet événement?\nSaisissez Oui ou Non\n")
-    notes = []
-    if re.match(r"^OUI$", choix_note, re.I):
-        print("Pour allez à la ligne pressez une fois \"Entrée\".\nPour quitter, presser deux fois \"Entrée\".")
-        while True:
-            note = input("\nSaissisez vos notes pour cet événement:\n - ")
-            if note == "":
-                break
-            notes.append(note)
+    note = demander_modification(
+        "Remarques",
+        evenement.note,
+        "Veuillez saisir une ou plusieurs remarques pour l'événement:\nATTENTION! les anciennes remaques seront supprimer\n - ",
+        lambda note: re.match(r"^.{2,500}$", note)
+    )
 
     infos_evenement = {
         "id_client": client,
@@ -118,7 +104,7 @@ def vue_modification_evenement(evenement):
         "date_fin": date_fin,
         "location": location,
         "attente": attente,
-        "notes": notes
+        "note": note
         }
 
     return infos_evenement
