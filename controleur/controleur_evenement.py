@@ -3,7 +3,27 @@ from models.models_managment import verification_role, verification_type
 from models.models import EnumPermission as EP
 from controleur_client import recherche_client
 from vue.vue import simple_print, vue_affichage_informations
-from vue.vue_evenement import vue_choix_recherche_evenement, vue_choix_evenement, vue_filtre_evenement, vue_creation_evenement, vue_modification_evenement
+from vue.vue_menu import menu_choix
+from vue.vue_evenement import(
+                            vue_choix_recherche_evenement,
+                            vue_choix_evenement,
+                            vue_filtre_evenement,
+                            vue_creation_evenement,
+                            vue_modification_evenement
+                            )
+
+
+def controleur_menu_evenement(collaborateur, session):
+    while True:
+        choix = menu_choix("événement")
+        if choix == 1:
+            affichage_evenements(collaborateur, session)
+        if choix == 2:
+            creation_evenement(collaborateur, session)
+        if choix == 3:
+            modification_evenement(collaborateur, session)
+        if choix == None:
+            return
 
 
 def creation_evenement(collaborateur, session):
@@ -38,7 +58,7 @@ def creation_evenement(collaborateur, session):
             simple_print(f"Erreur lors de la création:/n - {e}")
 
 
-def afficher_evenements(collaborateur, session):
+def affichage_evenements(collaborateur, session):
     action = EP.afficher_evenement
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)

@@ -3,7 +3,23 @@ from models.models_managment import verification_role, hashing_password
 from vue.vue import simple_print, vue_affichage_informations
 from sqlalchemy import func
 from vue.vue_collaborateur import vue_recherche_collaborateur, vue_creation_collaborateur, vue_modification_collaborateur
+from vue.vue_menu import menu_choix_collaborateur
 from models.models import EnumPermission as EP
+
+
+def controleur_menu_collaborateur(collaborateur, session):
+    while True:
+        choix = menu_choix_collaborateur()
+        if choix == 1:
+            afficher_tous_collaborateur(collaborateur, session)
+        if choix == 2:
+            creation_collaborateur(collaborateur, session)
+        if choix == 3:
+            modification_collaborateur(collaborateur, session)
+        if choix == 4:
+            suppretion_collaborateur(collaborateur, session)
+        if choix == None:
+            return
 
 
 def recherche_collaborateur(session):

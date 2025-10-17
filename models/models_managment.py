@@ -2,6 +2,8 @@ import bcrypt
 from database import SessionLocal
 from vue.vue import simple_print
 from models.models_permission import PERMISSIONS
+from models.models import Collaborateur
+from vue.vue import simple_print, input_user_identifient
 
 
 def hashing_password(password):
@@ -38,6 +40,19 @@ def verification_type(valeur):
         return int(valeur)
     else:
         return valeur
+
+
+def user_connexion(session):
+        identifient_user = input_user_identifient()
+        user_email = identifient_user[0]
+        user_password = identifient_user[1]
+        collaborateur = session.query(Collaborateur).filter(Collaborateur.email == user_email).first()
+        if collaborateur and verification_password(collaborateur.password, user_password):
+            simple_print(f"connexion réussi./n Bonjour {collaborateur.nom}")
+            return collaborateur
+        else:
+            simple_print("Identifiants incorecte")
+            return False
 
 
 def user_deconnexion():

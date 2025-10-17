@@ -1,4 +1,4 @@
-from vue.vue import verification_input, clear_terminal, demander_modification
+from vue.vue import verification_input, clear_terminal, demander_modification, vue_choix
 import re
 
 
@@ -65,3 +65,9 @@ def vue_modification_client(client):
         }
 
     return infos_client
+
+
+def vue_filtre_client():
+    print("Pour afficher tous les clients, veuillez saisir 1\n")
+    print("Pour afficher vos clients, veuillez saisir 2\n")
+    return vue_choix(2)

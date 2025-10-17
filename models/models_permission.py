@@ -1,21 +1,22 @@
 from models.models import MyEnum
+from models.models import EnumPermission as EP
 
 
 PERMISSIONS = {
-    "creer client": [MyEnum.commercial],
-    "afficher clients": [MyEnum.gestion, MyEnum.commercial, MyEnum.support],
-    "modifier client": [MyEnum.gestion, MyEnum.commercial],
+    EP.creer_client: [MyEnum.commercial],
+    EP.afficher_client: [MyEnum.gestion, MyEnum.commercial, MyEnum.support],
+    EP.modifier_client: [MyEnum.gestion, MyEnum.commercial],
     
-    "creer contrat": [MyEnum.gestion, MyEnum.commercial],
-    "afficher contrats": [MyEnum.gestion, MyEnum.commercial, MyEnum.support],
-    "modifier contrat": [MyEnum.gestion],
+    EP.creer_contrat: [MyEnum.gestion],
+    EP.afficher_contrat: [MyEnum.gestion, MyEnum.commercial, MyEnum.support],
+    EP.modifier_contrat: [MyEnum.gestion, MyEnum.commercial],
     
-    "creer evenement": [MyEnum.commercial],
-    "afficher evenements": [MyEnum.gestion, MyEnum.commercial, MyEnum.support],
-    "modifier evenement": [MyEnum.gestion, MyEnum.support],
+    EP.creer_evenement: [MyEnum.commercial],
+    EP.afficher_evenement: [MyEnum.gestion, MyEnum.commercial, MyEnum.support],
+    EP.modifier_evenement: [MyEnum.gestion, MyEnum.support],
     
-    "creer collaborateur": [MyEnum.gestion],
-    "afficher collaborateurs": [MyEnum.gestion],
-    "modifier collaborateur": [MyEnum.gestion],
-    "supprimer collaborateur": [MyEnum.gestion],
+    EP.creer_collaborateur: [MyEnum.gestion],
+    EP.afficher_collaborateurs: [MyEnum.gestion],
+    EP.modifier_collaborateur: [MyEnum.gestion],
+    EP.supprimer_collaborateur: [MyEnum.gestion],
 }

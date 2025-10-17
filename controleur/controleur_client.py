@@ -2,8 +2,22 @@ from models.models import Client
 from models.models_managment import verification_role, verification_type
 from vue.vue import simple_print, vue_affichage_informations
 from sqlalchemy import func
-from vue.vue_client import vue_recherche_client, vue_creation_client, vue_modification_client
+from vue.vue_client import vue_recherche_client, vue_creation_client, vue_modification_client, vue_filtre_client
+from vue.vue_menu import menu_choix
 from models.models import EnumPermission as EP
+
+
+def controleur_menu_client(collaborateur, session):
+    while True:
+        choix = menu_choix("client")
+        if choix == 1:
+            affichage_clients(collaborateur, session)
+        if choix == 2:
+            creation_client(collaborateur, session)
+        if choix == 3:
+            modification_client(collaborateur, session)
+        if choix == None:
+            return
 
 
 def creation_client(collaborateur, session):
@@ -33,24 +47,18 @@ def creation_client(collaborateur, session):
             simple_print(f"Erreur lors de la création:\n - {e}")
 
 
-def afficher_mes_clients(collaborateur, session):
+def affichage_clients(collaborateur, session):
     action = EP.afficher_client
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
-        clients = session.query(Client).filter(Client.id_collaborateur == collaborateur.id).all()
-        if len(clients) > 0:
-            vue_affichage_informations(clients)
-        else:
-            simple_print("Aucun clients.")
-
-
-def afficher_tous_clients(collaborateur, session):
-    action = EP.afficher_client
-    user_role = collaborateur.role
-    authorisation = verification_role(action, user_role)
-    if authorisation:
-        clients = session.query(Client).all()
+        choix_client = vue_filtre_client()
+        if choix_client == 1:
+            clients = session.query(Client).all()
+        if choix_client == 1:
+            clients = session.query(Client).filter(Client.id_collaborateur == collaborateur.id).all()
+        if choix_client == None:
+            return
         if len(clients) > 0:
             vue_affichage_informations(clients)
         else:

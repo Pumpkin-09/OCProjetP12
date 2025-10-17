@@ -4,7 +4,27 @@ from models.models import EnumPermission as EP
 from controleur.controleur_client import recherche_client
 from controleur_client import recherche_client
 from vue.vue import simple_print, vue_affichage_informations
-from vue.vue_contrat import vue_choix_recherche_contrat, vue_creation_contrat, vue_modification_contrat, vue_choix_contrat, vue_filtre_contrat
+from vue.vue_menu import menu_choix
+from vue.vue_contrat import (
+                            vue_choix_recherche_contrat,
+                            vue_creation_contrat,
+                            vue_modification_contrat,
+                            vue_choix_contrat,
+                            vue_filtre_contrat
+                            )
+
+
+def controleur_menu_contrat(collaborateur, session):
+    while True:
+        choix = menu_choix("contrat")
+        if choix == 1:
+            affichage_contrats(collaborateur, session)
+        if choix == 2:
+            creation_contrat(collaborateur, session)
+        if choix == 3:
+            modification_contrat(collaborateur, session)
+        if choix == None:
+            return
 
 
 def creation_contrat(collaborateur, session):
@@ -32,7 +52,7 @@ def creation_contrat(collaborateur, session):
             simple_print(f"Erreur lors de la création:/n - {e}")
 
 
-def filtre_afficher_contrats(collaborateur, session):
+def affichage_contrats(collaborateur, session):
     action = EP.afficher_contrat
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
