@@ -1,5 +1,5 @@
 from models.models import Evenement
-from models.models_managment import verification_role, verification_type
+from models.models_managment import verification_role
 from models.models import EnumPermission as EP
 from controleur_client import recherche_client
 from vue.vue import simple_print, vue_affichage_informations
@@ -46,7 +46,7 @@ def creation_evenement(collaborateur, session):
                 event_date_start = infos_evenement["date debut"],
                 event_date_stop = infos_evenement["date fin"],
                 location = infos_evenement["location"],
-                attente = verification_type(infos_evenement["attente"]),
+                attente = int(infos_evenement["attente"]),
                 note = infos_evenement["notes"]
                 )
             session.add(nouvel_evenement)
@@ -110,13 +110,13 @@ def modification_evenement(collaborateur, session):
             modification = vue_modification_evenement(evenement)
 
             evenement.name_event = modification["name_event"]
-            evenement.id_client = verification_type(modification["id_client"])
-            evenement.id_collaborateur = verification_type(modification["id_collaborateur"])
+            evenement.id_client = int(modification["id_client"])
+            evenement.id_collaborateur = int(modification["id_collaborateur"])
             evenement.event_date_start = modification["date_start"]
             evenement.event_date_stop = modification["date_stop"]
-            evenement.id_support_contrat= verification_type(modification["id_support_contrat"])
+            evenement.id_support_contrat= int(modification["id_support_contrat"])
             evenement.location = modification["location"]
-            evenement.attente = verification_type(modification["attente"])
+            evenement.attente = int(modification["attente"])
             evenement.note = modification["note"]
 
             session.commit()
