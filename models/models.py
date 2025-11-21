@@ -1,11 +1,6 @@
 from database import Base
 from sqlalchemy import Column, Integer, String, Date, DateTime, Float, Boolean, ForeignKey, Enum
-
-'''from sqlalchemy.orm import relationship'''
-
-from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
-from vue.vue import simple_print
 import enum
 
 
@@ -85,7 +80,7 @@ class Contrat(Base):
     id_client = Column(Integer, ForeignKey("client.id"), nullable=False)
     id_collaborateur = Column(Integer, ForeignKey("collaborateur.id"), nullable=False)
     montant_total = Column(Float, nullable=False)
-    reste_a_payer = Column(Float, nullable=False, nullable=True)
+    reste_a_payer = Column(Float, nullable=False)
     date_creation_contrat = Column(Date, default=func.curdate())
     status_contrat = Column(Boolean, default=False)
 

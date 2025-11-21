@@ -55,7 +55,7 @@ def affichage_clients(collaborateur, session):
         choix_client = vue_filtre_client()
         if choix_client == 1:
             clients = session.query(Client).all()
-        if choix_client == 1:
+        if choix_client == 2:
             clients = session.query(Client).filter(Client.id_collaborateur == collaborateur.id).all()
         if choix_client == None:
             return

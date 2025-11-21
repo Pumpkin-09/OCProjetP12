@@ -23,7 +23,7 @@ def vue_creation_collaborateur():
     print("Veuillez saisir le nom et prénom du collaborateur.")
     nom_complet = verification_input(" - ", lambda nom: re.match(r"^[a-zA-Z\s]{2,150}$", nom))
     email = verification_input("Veuillez saisir l'email du collaborateur':\n - ", lambda mail: mail != "")
-    password = verification_input("Veuillez saisir le mot de passe:\n - ", lambda password: password != "")
+    password = verification_input("Veuillez saisir le mot de passe:\n - ", lambda password: re.match(r"^\+\d+$", password))
     role = choix_role()
     infos_collaborateur = (nom_complet, email, password, role)
     return infos_collaborateur
@@ -55,7 +55,7 @@ def vue_modification_collaborateur(collaborateur):
         "Mot de passe",
         collaborateur.password,
         "Veuillez saisir le mot de passe:\n - ",
-        lambda telephone: re.match(r"^\+\d+$", telephone)
+        lambda password: re.match(r"^\+\d+$", password)
     )
 
     print(f"\nRole actuel: {collaborateur.role}")
@@ -65,11 +65,11 @@ def vue_modification_collaborateur(collaborateur):
     else:
         role = collaborateur.role
 
-    infos_client = {
+    infos_collaborateur = {
         "nom": nom,
         "email": email,
         "password": password,
         "role": role
         }
 
-    return infos_client
+    return infos_collaborateur

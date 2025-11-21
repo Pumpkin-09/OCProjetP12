@@ -40,9 +40,9 @@ def creation_collaborateur(collaborateur, session):
             return
         try:
             nouveau_collaborateur = Collaborateur(
-                nom_complet = infos_collaborateur["nom"],
+                nom = infos_collaborateur["nom"],
                 email = infos_collaborateur["email"],
-                password = infos_collaborateur["password"],
+                password = hashing_password(infos_collaborateur["password"]),
                 role = infos_collaborateur["role"]
             )
             session.add(nouveau_collaborateur)
@@ -81,7 +81,7 @@ def modification_collaborateur(collaborateur, session):
             if collaborateur_modifier.password != modification["password"]:
                 collaborateur_modifier.password = hashing_password(modification["password"])
 
-            collaborateur_modifier.nom_complet = modification["nom"]
+            collaborateur_modifier.nom = modification["nom"]
             collaborateur_modifier.email = modification["email"]
             collaborateur_modifier.role = modification["role"]
 

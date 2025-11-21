@@ -34,7 +34,7 @@ def vue_creation_evenement():
     infos_evenement["attente"] = verification_input(" - ", lambda attente: re.match(r"^\d+$", attente))
 
     print("Veuillez saisir une ou plusieurs remarques pour l'événement:")
-    infos_evenement["note"] = verification_input(" - ", lambda note: re.match(r"^.{2,500}$", note))
+    infos_evenement["note"] = verification_input(" - ", lambda note: re.match(r"^[a-zA-Z0-9\s\.,!?-]{2,500}$", note))
     
     return infos_evenement
 
@@ -93,7 +93,7 @@ def vue_modification_evenement(evenement):
         "Remarques",
         evenement.note,
         "Veuillez saisir une ou plusieurs remarques pour l'événement:\nATTENTION! les anciennes remaques seront supprimer\n - ",
-        lambda note: re.match(r"^.{2,500}$", note)
+        lambda note: re.match(r"^[a-zA-Z0-9\s\.,!?-]{2,500}$", note)
     )
 
     infos_evenement = {

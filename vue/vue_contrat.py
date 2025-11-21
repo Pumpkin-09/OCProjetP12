@@ -26,16 +26,16 @@ def vue_creation_contrat():
     infos_contrat["Montant total"] = verification_input(" - ", lambda montant_tot: re.match(r"^\d+([.]\d{1,2})?$", montant_tot))
     
     print("Veuillez saisir le montant qu'il reste à payer, en € avec un . pour les décimales:")
-    infos_contrat["Reste à payer"] = verification_input(" - ", lambda montant_rest: re.match(r"^\d+([.]\d{1,2})?$", montant_rest))
+    infos_contrat["Reste a payer"] = verification_input(" - ", lambda montant_rest: re.match(r"^\d+([.]\d{1,2})?$", montant_rest))
 
-    print("Statu du contrat :")
+    print("Statut du contrat :")
     while True:
         choix = input("Est-il signé?\nOui\nNon\n")
         if re.match(r"^OUI$", choix, re.I):
-            infos_contrat["statu du contrat"] = True
+            infos_contrat["statut contrat"] = True
             break
         if re.match(r"^NON$", choix, re.I):
-            infos_contrat["statu du contrat"] = False
+            infos_contrat["statut contrat"] = False
             break
         else:
             print("Choix non valide, entrez \"oui\" ou \"non\"\n")
@@ -72,28 +72,28 @@ def vue_modification_contrat(contrat):
         lambda montant_rest: re.match(r"^\d+([.]\d{1,2})?$", montant_rest)
     )
 
-    print(f"\nStatus du contrat actuel: {contrat.status_contrat}")
+    print(f"\nStatut du contrat actuel: {contrat.status_contrat}")
     choix = choix_modification()
     if choix:
         while True:
             choix = input("Est-il signé?\nOui\nNon\n")
             if re.match(r"^OUI$", choix, re.I):
-                status_contrat = True
+                statut_contrat = True
                 break
             if re.match(r"^NON$", choix, re.I):
-                status_contrat = False
+                statut_contrat = False
                 break
             else:
                 print("Choix non valide, entrez \"oui\" ou \"non\"\n")
     else:
-        status_contrat = contrat.status_contrat
+        statut_contrat = contrat.status_contrat
 
     infos_contrat = {
-        "id_client": client,
-        "id_collaborateur": collaborateur,
-        "montant_total": montant_total,
-        "reste_a_payer": reste_a_payer,
-        "status_contrat": status_contrat
+        "id client": client,
+        "id collaborateur": collaborateur,
+        "montant total": montant_total,
+        "reste a payer": reste_a_payer,
+        "statut contrat": statut_contrat
         }
 
     return infos_contrat

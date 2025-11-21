@@ -1,6 +1,5 @@
 import bcrypt
 from database import SessionLocal
-from vue.vue import simple_print
 from models.models_permission import PERMISSIONS
 from models.models import Collaborateur
 from vue.vue import simple_print, input_user_identifient
@@ -21,8 +20,6 @@ def verification_password(hash_password, user_password):
 
 
 def verification_role(action, user_role):
-    authorization_role = False
-
     if action not in PERMISSIONS:
         print(f"Erreur: Action '{action}' inconnue")
         return False
@@ -31,32 +28,25 @@ def verification_role(action, user_role):
         return True
 
     else:
-        simple_print(f"Accès refuser, votre role de {user_role} ne permet pas l'operation.")
+        simple_print(f"Accès refusé, votre rôle de {user_role} ne permet pas l'opération.")
         return False
 
 
-def verification_type(valeur):
-    if type(valeur) != int:
-        return int(valeur)
-    else:
-        return valeur
-
-
 def user_connexion(session):
-        identifient_user = input_user_identifient()
-        user_email = identifient_user[0]
-        user_password = identifient_user[1]
-        collaborateur = session.query(Collaborateur).filter(Collaborateur.email == user_email).first()
-        if collaborateur and verification_password(collaborateur.password, user_password):
-            simple_print(f"connexion réussi./n Bonjour {collaborateur.nom}")
-            return collaborateur
-        else:
-            simple_print("Identifiants incorecte")
-            return False
+    identifient_user = input_user_identifient()
+    user_email = identifient_user[0]
+    user_password = identifient_user[1]
+    collaborateur = session.query(Collaborateur).filter(Collaborateur.email == user_email).first()
+    if collaborateur and verification_password(collaborateur.password, user_password):
+        simple_print(f"Connexion réussi.\nBonjour {collaborateur.nom}")
+        return collaborateur
+    else:
+        simple_print("Identifiants incorrects")
+        return False
 
 
 def user_deconnexion():
-    simple_print("au revoir")
+    simple_print("Au revoir")
     connexion = False
     SessionLocal.exit()
     return connexion

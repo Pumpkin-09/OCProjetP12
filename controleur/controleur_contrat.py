@@ -1,5 +1,5 @@
 from models.models import Contrat
-from models.models_managment import verification_role, verification_type
+from models.models_managment import verification_role
 from models.models import EnumPermission as EP
 from controleur.controleur_client import recherche_client
 from controleur_client import recherche_client
@@ -38,14 +38,14 @@ def creation_contrat(collaborateur, session):
         try:
             nouveau_contrat = Contrat(
                 id_client = client.id,
-                id_collaborateur = verification_type(infos_contrat["id collaborateur"]),
-                montant_total = verification_type(infos_contrat["montant"]),
-                reste_a_payer = verification_type(infos_contrat["reste_a_payer"]),
-                status_contrat = infos_contrat["statu du contrat"]
+                id_collaborateur = int(infos_contrat["id collaborateur"]),
+                montant_total = float(infos_contrat["montant total"]),
+                reste_a_payer = float(infos_contrat["reste a payer"]),
+                status_contrat = infos_contrat["statut contrat"]
             )
             session.add(nouveau_contrat)
             session.commit()
-            simple_print(f"Contrat créé avec succès")
+            simple_print("Contrat créé avec succès")
 
         except Exception as e:
             session.rollback()
@@ -107,11 +107,11 @@ def modification_contrat(collaborateur, session):
         try:
             modification = vue_modification_contrat(contrat)
 
-            contrat.id_client = verification_type(modification["id_client"])
-            contrat.id_collaborateur = verification_type(modification["id_collaborateur"])
-            contrat.montant_total = verification_type(modification["montant_total"])
-            contrat.reste_a_payer = verification_type(modification["reste_a_payer"])
-            contrat.status_contrat = modification["status_contrat"]
+            contrat.id_client = int(modification["id client"])
+            contrat.id_collaborateur = int(modification["id collaborateur"])
+            contrat.montant_total = float(modification["montant total"])
+            contrat.reste_a_payer = float(modification["reste a payer"])
+            contrat.status_contrat = modification["statut contrat"]
 
             session.commit()
             simple_print(f"Contrat modiffié avec succès")
