@@ -93,7 +93,7 @@ def contrat_factory():
         id_client=1,
         id_collaborateur=1,
         montant_total=1000.0,
-        reste_a_payer=0.0,
+        reste_a_payer=1000.0,
         date_creation_contrat=None,
         status_contrat=False
     ):

@@ -33,8 +33,11 @@ def creation_contrat(collaborateur, session):
     authorisation = verification_role(action, user_role)
     if authorisation:
         client = recherche_client()
-        infos_contrat = vue_creation_contrat()
+        if client is None:
+            simple_print("Création de contrat annulée.")
+            return
 
+        infos_contrat = vue_creation_contrat()
         try:
             nouveau_contrat = Contrat(
                 id_client = client.id,
