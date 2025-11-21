@@ -2,7 +2,6 @@ from models.models import Contrat
 from models.models_managment import verification_role
 from models.models import EnumPermission as EP
 from controleur.controleur_client import recherche_client
-from controleur_client import recherche_client
 from vue.vue import simple_print, vue_affichage_informations
 from vue.vue_menu import menu_choix
 from vue.vue_contrat import (
