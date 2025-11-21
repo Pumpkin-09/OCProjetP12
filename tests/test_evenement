@@ -1,0 +1,107 @@
+from tests.conftest import *
+from unittest.mock import patch
+from datetime import date, timedelta
+from controleur.controleur_evenement import creation_evenement
+
+
+@patch('controleur.controleur_evenement.verification_role')
+@patch('controleur.controleur_evenement.recherche_client')
+@patch('controleur.controleur_evenement.vue_creation_evenement')
+@patch('controleur.controleur_evenement.simple_print')
+def test_creation_evenement_succes(
+    mock_print,
+    mock_vue_creation,
+    mock_recherche_client,
+    mock_verif_role,
+    fake_collaborateurs,
+    client_factory,
+    mock_session
+):
+    # Préparer les données
+    collaborateur_commercial = fake_collaborateurs[0]  # Collaborateur commercial
+    collaborateur_support = fake_collaborateurs[1]  # Collaborateur support
+    client = client_factory()
+    mock_verif_role.return_value = True
+    mock_recherche_client.return_value = client
+    mock_vue_creation.return_value = {
+        "id": 1,
+        "id client": client.id,
+        "id collaborateur": collaborateur_commercial.id,
+        "id support contrat": collaborateur_support.id,
+        "event date start": date.today(),
+        "event date stop": date.today() + timedelta(days=1),
+        "location": "Lieu Test",
+        "attente": 100,
+        "note": "Note test"
+    }
+
+    # Appeler la fonction
+    creation_evenement(collaborateur_commercial, mock_session)
+
+    # Vérifications
+    mock_verif_role.assert_called_once()
+    mock_recherche_client.assert_called_once()
+    mock_vue_creation.assert_called_once()
+    mock_session.add.assert_called_once()
+    mock_session.commit.assert_called_once()
+    mock_print.assert_called_with("Evenement créé avec succès")
+
+
+@patch('controleur.controleur_evenement.verification_role')
+@patch('controleur.controleur_evenement.recherche_client')
+@patch('controleur.controleur_evenement.vue_creation_evenement')
+@patch('controleur.controleur_evenement.simple_print')
+def test_creation_evenement_client_non_trouve(
+    mock_print,
+    mock_vue_creation,
+    mock_recherche_client,
+    mock_verif_role,
+    fake_collaborateurs,
+    mock_session
+):
+    # Préparer les données
+    collaborateur = fake_collaborateurs[0]  # Collaborateur commercial
+    mock_verif_role.return_value = True
+    mock_recherche_client.return_value = None
+
+
+    # Appeler la fonction
+    creation_evenement(collaborateur, mock_session)
+
+    # Vérifications
+    mock_verif_role.assert_called_once()
+    mock_recherche_client.assert_called_once()
+    mock_print.assert_called_with("Client introuvable.")
+
+    mock_vue_creation.assert_not_called()
+    mock_session.add.assert_not_called()
+    mock_session.commit.assert_not_called()
+
+@patch('controleur.controleur_evenement.verification_role')
+@patch('controleur.controleur_evenement.recherche_client')
+@patch('controleur.controleur_evenement.vue_creation_evenement')
+@patch('controleur.controleur_evenement.simple_print')
+def test_creation_evenement_pas_authorisation(
+    mock_print,
+    mock_vue_creation,
+    mock_recherche_client,
+    mock_verif_role,
+    fake_collaborateurs,
+    mock_session
+):
+    # Préparer les données
+    collaborateur = fake_collaborateurs[1]  # Collaborateur support
+    mock_verif_role.return_value = False
+
+
+    # Appeler la fonction
+    creation_evenement(collaborateur, mock_session)
+
+    # Vérifications
+    mock_verif_role.assert_called_once()
+
+    mock_recherche_client.assert_not_called()
+    mock_print.assert_not_called()
+    mock_vue_creation.assert_not_called()
+    mock_session.add.assert_not_called()
+    mock_session.commit.assert_not_called()

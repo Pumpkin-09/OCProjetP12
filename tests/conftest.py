@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import MagicMock
-from datetime import date
+from datetime import date, timedelta
 from models.models import MyEnum
 
 
@@ -33,7 +33,7 @@ def client_factory():
         client.telephone = telephone
         client.nom_entreprise = nom_entreprise
         client.date_creation = date_creation or date.today()
-        client.date_mise_a_jour = date_mise_a_jour or date.today()
+        client.date_mise_a_jour = date_mise_a_jour or date.today() + timedelta(days=1)
         client.id_collaborateur = id_collaborateur
         return client
 
@@ -95,7 +95,7 @@ def contrat_factory():
         montant_total=1000.0,
         reste_a_payer=1000.0,
         date_creation_contrat=None,
-        status_contrat=False
+        statut_contrat=False
     ):
         contrat = MagicMock()
         contrat.id = id
@@ -104,7 +104,7 @@ def contrat_factory():
         contrat.montant_total = montant_total
         contrat.reste_a_payer = reste_a_payer
         contrat.date_creation_contrat = date_creation_contrat or date.today()
-        contrat.status_contrat = status_contrat
+        contrat.status_contrat = statut_contrat
         return contrat
     
     return _create_contrat
@@ -130,7 +130,7 @@ def evenement_factory():
         evenement.id_collaborateur = id_collaborateur
         evenement.id_support_contrat = id_support_contrat
         evenement.event_date_start = event_date_start or date.today()
-        evenement.event_date_stop = event_date_stop or date.today()
+        evenement.event_date_stop = event_date_stop or date.today() + timedelta(days=1
         evenement.location = location
         evenement.attente = attente
         evenement.note = note

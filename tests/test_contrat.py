@@ -1,5 +1,6 @@
 from tests.conftest import *
 from unittest.mock import patch
+from datetime import date
 from controleur.controleur_contrat import creation_contrat
 
 
@@ -14,15 +15,23 @@ def test_creation_contrat_succes(
     mock_verif_role,
     fake_collaborateurs,
     client_factory,
-    contrat_factory,
     mock_session
 ):
     # Préparer les données
     collaborateur = fake_collaborateurs[2]  # Collaborateur gestion
     client = client_factory()
     mock_verif_role.return_value = True
-    mock_vue_creation.return_value = contrat_factory(id_client=client.id, id_collaborateur=collaborateur.id)
     mock_recherche_client.return_value = client
+    mock_vue_creation.return_value = {
+        "id": 1,
+        "id client": client.id,
+        "id collaborateur": collaborateur.id,
+        "montant total": 1000.0,
+        "reste a payer": 1000.0,
+        "date creation contrat": date.today(),
+        "statut contrat": False
+    }
+
 
     # Appeler la fonction
     creation_contrat(collaborateur, mock_session)
