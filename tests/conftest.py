@@ -130,7 +130,7 @@ def evenement_factory():
         evenement.id_collaborateur = id_collaborateur
         evenement.id_support_contrat = id_support_contrat
         evenement.event_date_start = event_date_start or date.today()
-        evenement.event_date_stop = event_date_stop or date.today() + timedelta(days=1
+        evenement.event_date_stop = event_date_stop or date.today() + timedelta(days=1)
         evenement.location = location
         evenement.attente = attente
         evenement.note = note
