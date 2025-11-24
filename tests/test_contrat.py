@@ -1,7 +1,7 @@
 from tests.conftest import *
 from unittest.mock import patch
 from datetime import date
-from controleur.controleur_contrat import creation_contrat
+from controleur.controleur_contrat import creation_contrat, controleur_menu_contrat
 
 
 @patch('controleur.controleur_contrat.verification_role')
@@ -102,3 +102,94 @@ def test_creation_contrat_pas_authorisation(
     mock_vue_creation.assert_not_called()
     mock_session.add.assert_not_called()
     mock_session.commit.assert_not_called()
+
+
+@patch('controleur.controleur_contrat.menu_choix')
+@patch('controleur.controleur_contrat.affichage_contrats')
+@patch('controleur.controleur_contrat.creation_contrat')
+@patch('controleur.controleur_contrat.modification_contrat')
+def test_choix_menu_contrat_affichage_contrat(
+    mock_modification_contrat,
+    mock_creation_contrat,
+    mock_affichage_contrats,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [1, None]  # Choix pour afficher les contrats
+
+    # Appeler la fonction
+    controleur_menu_contrat(None, None)
+
+    # Vérifications
+    mock_affichage_contrats.assert_called_once()
+
+    mock_creation_contrat.assert_not_called()
+    mock_modification_contrat.assert_not_called()
+
+
+@patch('controleur.controleur_contrat.menu_choix')
+@patch('controleur.controleur_contrat.affichage_contrats')
+@patch('controleur.controleur_contrat.creation_contrat')
+@patch('controleur.controleur_contrat.modification_contrat')
+def test_choix_menu_contrat_creation_contrat(
+    mock_modification_contrat,
+    mock_creation_contrat,
+    mock_affichage_contrats,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [2, None]  # Choix pour créer les contrats
+
+    # Appeler la fonction
+    controleur_menu_contrat(None, None)
+
+    # Vérifications
+    mock_creation_contrat.assert_called_once()
+
+    mock_affichage_contrats.assert_not_called()
+    mock_modification_contrat.assert_not_called()
+
+
+@patch('controleur.controleur_contrat.menu_choix')
+@patch('controleur.controleur_contrat.affichage_contrats')
+@patch('controleur.controleur_contrat.creation_contrat')
+@patch('controleur.controleur_contrat.modification_contrat')
+def test_choix_menu_contrat_modification_contrat(
+    mock_modification_contrat,
+    mock_creation_contrat,
+    mock_affichage_contrats,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [3, None]  # Choix pour modifier les contrats
+
+    # Appeler la fonction
+    controleur_menu_contrat(None, None)
+
+    # Vérifications
+    mock_modification_contrat.assert_called_once()
+
+    mock_affichage_contrats.assert_not_called()
+    mock_creation_contrat.assert_not_called()
+
+
+@patch('controleur.controleur_contrat.menu_choix')
+@patch('controleur.controleur_contrat.affichage_contrats')
+@patch('controleur.controleur_contrat.creation_contrat')
+@patch('controleur.controleur_contrat.modification_contrat')
+def test_choix_menu_contrat_quitter(
+    mock_modification_contrat,
+    mock_creation_contrat,
+    mock_affichage_contrats,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.return_value = None  # Choix pour quitter le menu contrats
+
+    # Appeler la fonction
+    controleur_menu_contrat(None, None)
+
+    # Vérifications
+    mock_affichage_contrats.assert_not_called()
+    mock_creation_contrat.assert_not_called()
+    mock_modification_contrat.assert_not_called()

@@ -17,7 +17,7 @@ def controleur_menu_collaborateur(collaborateur, session):
         if choix == 3:
             modification_collaborateur(collaborateur, session)
         if choix == 4:
-            suppretion_collaborateur(collaborateur, session)
+            suppression_collaborateur(collaborateur, session)
         if choix == None:
             return
 
@@ -93,7 +93,7 @@ def modification_collaborateur(collaborateur, session):
             simple_print(f"Erreur lors de la modification:/n - {e}")
 
 
-def suppretion_collaborateur(collaborateur, session):
+def suppression_collaborateur(collaborateur, session):
     action = EP.supprimer_collaborateur
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)

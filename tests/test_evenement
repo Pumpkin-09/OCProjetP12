@@ -1,7 +1,7 @@
 from tests.conftest import *
 from unittest.mock import patch
 from datetime import date, timedelta
-from controleur.controleur_evenement import creation_evenement
+from controleur.controleur_evenement import creation_evenement, controleur_menu_evenement
 
 
 @patch('controleur.controleur_evenement.verification_role')
@@ -105,3 +105,94 @@ def test_creation_evenement_pas_authorisation(
     mock_vue_creation.assert_not_called()
     mock_session.add.assert_not_called()
     mock_session.commit.assert_not_called()
+
+
+@patch('controleur.controleur_client.menu_choix')
+@patch('controleur.controleur_client.affichage_clients')
+@patch('controleur.controleur_evenement.creation_evenement')
+@patch('controleur.controleur_evenement.modification_evenement')
+def test_choix_menu_evenement_affichage_evenement(
+    mock_modification_evenement,
+    mock_creation_evenement,
+    mock_affichage_evenements,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [1, None]  # Choix pour afficher les evenements
+
+    # Appeler la fonction
+    controleur_menu_evenement(None, None)
+
+    # Vérifications
+    mock_affichage_evenements.assert_called_once()
+
+    mock_creation_evenement.assert_not_called()
+    mock_modification_evenement.assert_not_called()
+
+
+@patch('controleur.controleur_evenement.menu_choix')
+@patch('controleur.controleur_evenement.affichage_evenements')
+@patch('controleur.controleur_evenement.creation_evenement')
+@patch('controleur.controleur_evenement.modification_evenement')
+def test_choix_menu_evenement_creation_evenement(
+    mock_modification_evenement,
+    mock_creation_evenement,
+    mock_affichage_evenements,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [2, None]  # Choix pour créer les evenements
+
+    # Appeler la fonction
+    controleur_menu_evenement(None, None)
+
+    # Vérifications
+    mock_creation_evenement.assert_called_once()
+
+    mock_affichage_evenements.assert_not_called()
+    mock_modification_evenement.assert_not_called()
+
+
+@patch('controleur.controleur_evenement.menu_choix')
+@patch('controleur.controleur_evenement.affichage_evenements')
+@patch('controleur.controleur_evenement.creation_evenement')
+@patch('controleur.controleur_evenement.modification_evenement')
+def test_choix_menu_evenement_modification_evenement(
+    mock_modification_evenement,
+    mock_creation_evenement,
+    mock_affichage_evenements,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [3, None]  # Choix pour modifier les evenements
+
+    # Appeler la fonction
+    controleur_menu_evenement(None, None)
+
+    # Vérifications
+    mock_modification_evenement.assert_called_once()
+
+    mock_affichage_evenements.assert_not_called()
+    mock_creation_evenement.assert_not_called()
+
+
+@patch('controleur.controleur_evenement.menu_choix')
+@patch('controleur.controleur_evenement.affichage_evenements')
+@patch('controleur.controleur_evenement.creation_evenement')
+@patch('controleur.controleur_evenement.modification_evenement')
+def test_choix_menu_evenement_quitter(
+    mock_modification_evenement,
+    mock_creation_evenement,
+    mock_affichage_evenements,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.return_value = None  # Choix pour quitter le menu evenements
+
+    # Appeler la fonction
+    controleur_menu_evenement(None, None)
+
+    # Vérifications
+    mock_affichage_evenements.assert_not_called()
+    mock_creation_evenement.assert_not_called()
+    mock_modification_evenement.assert_not_called()

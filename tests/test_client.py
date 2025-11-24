@@ -1,6 +1,6 @@
 from tests.conftest import *
 from unittest.mock import patch
-from controleur.controleur_client import creation_client
+from controleur.controleur_client import creation_client, controleur_menu_client
 
 
 @patch('controleur.controleur_client.simple_print')
@@ -92,3 +92,94 @@ def test_creation_client_pas_authorisation(
     mock_session.commit.assert_not_called()
     mock_print.assert_not_called()
     mock_vue_creation.assert_not_called()
+
+
+@patch('controleur.controleur_client.menu_choix')
+@patch('controleur.controleur_client.affichage_clients')
+@patch('controleur.controleur_client.creation_client')
+@patch('controleur.controleur_client.modification_client')
+def test_choix_menu_client_affichage_client(
+    mock_modification_client,
+    mock_creation_client,
+    mock_affichage_clients,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [1, None]  # Choix pour afficher les clients
+
+    # Appeler la fonction
+    controleur_menu_client(None, None)
+
+    # Vérifications
+    mock_affichage_clients.assert_called_once()
+
+    mock_creation_client.assert_not_called()
+    mock_modification_client.assert_not_called()
+
+
+@patch('controleur.controleur_client.menu_choix')
+@patch('controleur.controleur_client.affichage_clients')
+@patch('controleur.controleur_client.creation_client')
+@patch('controleur.controleur_client.modification_client')
+def test_choix_menu_client_creation_client(
+    mock_modification_client,
+    mock_creation_client,
+    mock_affichage_clients,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [2, None]  # Choix pour créer les clients
+
+    # Appeler la fonction
+    controleur_menu_client(None, None)
+
+    # Vérifications
+    mock_creation_client.assert_called_once()
+
+    mock_affichage_clients.assert_not_called()
+    mock_modification_client.assert_not_called()
+
+
+@patch('controleur.controleur_client.menu_choix')
+@patch('controleur.controleur_client.affichage_clients')
+@patch('controleur.controleur_client.creation_client')
+@patch('controleur.controleur_client.modification_client')
+def test_choix_menu_client_modification_client(
+    mock_modification_client,
+    mock_creation_client,
+    mock_affichage_clients,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [3, None]  # Choix pour modifier les clients
+
+    # Appeler la fonction
+    controleur_menu_client(None, None)
+
+    # Vérifications
+    mock_modification_client.assert_called_once()
+
+    mock_affichage_clients.assert_not_called()
+    mock_creation_client.assert_not_called()
+
+
+@patch('controleur.controleur_client.menu_choix')
+@patch('controleur.controleur_client.affichage_clients')
+@patch('controleur.controleur_client.creation_client')
+@patch('controleur.controleur_client.modification_client')
+def test_choix_menu_client_quitter(
+    mock_modification_client,
+    mock_creation_client,
+    mock_affichage_clients,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.return_value = None  # Choix pour quitter le menu clients
+
+    # Appeler la fonction
+    controleur_menu_client(None, None)
+
+    # Vérifications
+    mock_affichage_clients.assert_not_called()
+    mock_creation_client.assert_not_called()
+    mock_modification_client.assert_not_called()

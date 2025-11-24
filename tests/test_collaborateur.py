@@ -1,6 +1,6 @@
 from tests.conftest import *
 from unittest.mock import patch
-from controleur.controleur_collaborateur import creation_collaborateur
+from controleur.controleur_collaborateur import creation_collaborateur, controleur_menu_collaborateur
 from models.models import MyEnum
 
 
@@ -96,3 +96,126 @@ def test_creation_collaborateur_pas_authorisation(
     mock_session.commit.assert_not_called()
     mock_print.assert_not_called()
     mock_vue_creation.assert_not_called()
+
+
+@patch('controleur.controleur_collaborateur.menu_choix_collaborateur')
+@patch('controleur.controleur_collaborateur.afficher_tous_collaborateur')
+@patch('controleur.controleur_collaborateur.creation_collaborateur')
+@patch('controleur.controleur_collaborateur.modification_collaborateur')
+@patch('controleur.controleur_collaborateur.suppression_collaborateur')
+def test_choix_menu_collaborateur_affichage_collaborateur(
+    mock_suppression_collaborateur,
+    mock_modification_collaborateur,
+    mock_creation_collaborateur,
+    mock_affichage_collaborateurs,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [1, None]  # Choix pour afficher les collaborateurs
+    # Appeler la fonction
+    controleur_menu_collaborateur(None, None)
+
+    # Vérifications
+    mock_affichage_collaborateurs.assert_called_once()
+
+    mock_creation_collaborateur.assert_not_called()
+    mock_modification_collaborateur.assert_not_called()
+    mock_suppression_collaborateur.assert_not_called()
+
+
+@patch('controleur.controleur_collaborateur.menu_choix_collaborateur')
+@patch('controleur.controleur_collaborateur.afficher_tous_collaborateur')
+@patch('controleur.controleur_collaborateur.creation_collaborateur')
+@patch('controleur.controleur_collaborateur.modification_collaborateur')
+@patch('controleur.controleur_collaborateur.suppression_collaborateur')
+def test_choix_menu_collaborateur_creation_collaborateur(
+    mock_suppression_collaborateur,
+    mock_modification_collaborateur,
+    mock_creation_collaborateur,
+    mock_affichage_collaborateurs,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [2, None]  # Choix pour créer des collaborateurs
+    # Appeler la fonction
+    controleur_menu_collaborateur(None, None)
+
+    # Vérifications
+    mock_creation_collaborateur.assert_called_once()
+
+    mock_affichage_collaborateurs.assert_not_called()
+    mock_modification_collaborateur.assert_not_called()
+    mock_suppression_collaborateur.assert_not_called()
+
+
+@patch('controleur.controleur_collaborateur.menu_choix_collaborateur')
+@patch('controleur.controleur_collaborateur.afficher_tous_collaborateur')
+@patch('controleur.controleur_collaborateur.creation_collaborateur')
+@patch('controleur.controleur_collaborateur.modification_collaborateur')
+@patch('controleur.controleur_collaborateur.suppression_collaborateur')
+def test_choix_menu_collaborateur_modification_collaborateur(
+    mock_suppression_collaborateur,
+    mock_modification_collaborateur,
+    mock_creation_collaborateur,
+    mock_affichage_collaborateurs,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [3, None]  # Choix pour modifier les collaborateurs
+    # Appeler la fonction
+    controleur_menu_collaborateur(None, None)
+
+    # Vérifications
+    mock_modification_collaborateur.assert_called_once()
+
+    mock_affichage_collaborateurs.assert_not_called()
+    mock_creation_collaborateur.assert_not_called()
+    mock_suppression_collaborateur.assert_not_called()
+
+@patch('controleur.controleur_collaborateur.menu_choix_collaborateur')
+@patch('controleur.controleur_collaborateur.afficher_tous_collaborateur')
+@patch('controleur.controleur_collaborateur.creation_collaborateur')
+@patch('controleur.controleur_collaborateur.modification_collaborateur')
+@patch('controleur.controleur_collaborateur.suppression_collaborateur')
+def test_choix_menu_collaborateur_suppression_collaborateur(
+    mock_suppression_collaborateur,
+    mock_modification_collaborateur,
+    mock_creation_collaborateur,
+    mock_affichage_collaborateurs,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.side_effect = [4, None]  # Choix pour supprimer les collaborateurs
+    # Appeler la fonction
+    controleur_menu_collaborateur(None, None)
+
+    # Vérifications
+    mock_suppression_collaborateur.assert_called_once()
+
+    mock_modification_collaborateur.assert_not_called()
+    mock_affichage_collaborateurs.assert_not_called()
+    mock_creation_collaborateur.assert_not_called()
+
+@patch('controleur.controleur_collaborateur.menu_choix_collaborateur')
+@patch('controleur.controleur_collaborateur.afficher_tous_collaborateur')
+@patch('controleur.controleur_collaborateur.creation_collaborateur')
+@patch('controleur.controleur_collaborateur.modification_collaborateur')
+@patch('controleur.controleur_collaborateur.suppression_collaborateur')
+def test_choix_menu_collaborateur_quitter(
+    mock_suppression_collaborateur,
+    mock_modification_collaborateur,
+    mock_creation_collaborateur,
+    mock_affichage_collaborateurs,
+    mock_menu_choix
+):
+    # Préparer les données
+    mock_menu_choix.return_value = None  # Choix pour quitter le menu collaborateurs
+
+    # Appeler la fonction
+    controleur_menu_collaborateur(None, None)
+
+    # Vérifications
+    mock_affichage_collaborateurs.assert_not_called()
+    mock_creation_collaborateur.assert_not_called()
+    mock_modification_collaborateur.assert_not_called()
+    mock_suppression_collaborateur.assert_not_called()
