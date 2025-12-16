@@ -54,6 +54,7 @@ class Client(Base):
         ID du collaborateur: {self.id_collaborateur}
         """
 
+
 class Collaborateur(Base):
     __tablename__ = "collaborateur"
 
@@ -61,7 +62,7 @@ class Collaborateur(Base):
     nom = Column(String(150), nullable=False)
     email = Column(String(250), nullable=False, unique=True)
     password = Column(String(250), nullable=False)
-    role = Column(Enum(MyEnum), nullable=False)
+    role = Column(Enum(MyEnum, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
 
     def __str__(self):
         return f"""
@@ -69,7 +70,7 @@ class Collaborateur(Base):
         ID: {self.id}
         Nom: {self.nom}
         Email: {self.email}
-        Role: {self.role}
+        Role: {self.role.value}
         """
 
 

@@ -1,8 +1,7 @@
 import bcrypt
-from database import SessionLocal
 from models.models_permission import PERMISSIONS
 from models.models import Collaborateur
-from vue.vue import simple_print, input_user_identifient
+from vue.vue import simple_print, input_user_identifient, clear_terminal
 
 
 def hashing_password(password):
@@ -28,7 +27,7 @@ def verification_role(action, user_role):
         return True
 
     else:
-        simple_print(f"Accès refusé, votre rôle de {user_role} ne permet pas l'opération.")
+        simple_print(f"Accès refusé, votre rôle dans l'{user_role.value} ne vous permet pas de réaliser cette opération.")
         return False
 
 
@@ -37,6 +36,7 @@ def user_connexion(session):
     user_email = identifient_user[0]
     user_password = identifient_user[1]
     collaborateur = session.query(Collaborateur).filter(Collaborateur.email == user_email).first()
+    clear_terminal()
     if collaborateur and verification_password(collaborateur.password, user_password):
         simple_print(f"Connexion réussi.\nBonjour {collaborateur.nom}")
         return collaborateur
@@ -45,8 +45,8 @@ def user_connexion(session):
         return False
 
 
-def user_deconnexion():
+def user_deconnexion(session):
     simple_print("Au revoir")
     connexion = False
-    SessionLocal.exit()
+    session.close()
     return connexion

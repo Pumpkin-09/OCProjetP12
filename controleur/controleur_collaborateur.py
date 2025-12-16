@@ -24,7 +24,7 @@ def controleur_menu_collaborateur(collaborateur, session):
 
 def recherche_collaborateur(session):
     collaborateur_chercher = vue_recherche_collaborateur()
-    collaborateur = session.query(Collaborateur).filter(func.lower(Collaborateur.nom_complet) == collaborateur_chercher.lower()).first()
+    collaborateur = session.query(Collaborateur).filter(func.lower(Collaborateur.nom) == collaborateur_chercher.lower()).first()
     return collaborateur
 
 
@@ -71,7 +71,7 @@ def modification_collaborateur(collaborateur, session):
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
-        collaborateur_modifier = recherche_collaborateur()
+        collaborateur_modifier = recherche_collaborateur(session)
         if collaborateur_modifier is None:
             simple_print("Ce collaborateur n'existe pas.")
             return

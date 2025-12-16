@@ -23,21 +23,21 @@ def main():
     while True:
         choix_menu = menu()
         if choix_menu == 1:
-            controleur_menu_client(session, collaborateur)
+            controleur_menu_client(collaborateur, session)
 
         if choix_menu == 2:
-            controleur_menu_evenement(session, collaborateur)
+            controleur_menu_evenement(collaborateur, session)
 
         if choix_menu == 3:
-            controleur_menu_contrat(session, collaborateur)
+            controleur_menu_contrat(collaborateur, session)
 
         if choix_menu == 4:
-            controleur_menu_collaborateur(session, collaborateur)
+            controleur_menu_collaborateur(collaborateur, session)
 
-        if choix_menu == 0:
+        if choix_menu == None:
             stop = quitter()
             if stop:
-                collaborateur = user_deconnexion()
+                user_deconnexion(session)
                 return
 
 

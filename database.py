@@ -17,7 +17,7 @@ DB_NAME = os.getenv("DB_DATABASE", "db_name")
 SQLALCHEMY_DATABASE_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 # Créer l'engine SQLAlchemy
-engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
+engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True) # mettre echo à False en production
 
 # Configurer la session
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

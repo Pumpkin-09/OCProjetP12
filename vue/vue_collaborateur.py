@@ -21,11 +21,12 @@ def choix_role():
 
 def vue_creation_collaborateur():
     print("Veuillez saisir le nom et prénom du collaborateur.")
-    nom_complet = verification_input(" - ", lambda nom: re.match(r"^[a-zA-Z\s]{2,150}$", nom))
-    email = verification_input("Veuillez saisir l'email du collaborateur':\n - ", lambda mail: mail != "")
-    password = verification_input("Veuillez saisir le mot de passe:\n - ", lambda password: re.match(r"^\+\d+$", password))
-    role = choix_role()
-    infos_collaborateur = (nom_complet, email, password, role)
+    infos_collaborateur = {
+    "nom": verification_input(" - ", lambda nom: re.match(r"^[a-zA-Z\s]{2,150}$", nom)),
+    "email": verification_input("Veuillez saisir l'email du collaborateur':\n - ", lambda mail: mail != ""),
+    "password": verification_input("Veuillez saisir le mot de passe:\n - ", lambda password: password != ""),
+    "role": choix_role()
+    }
     return infos_collaborateur
 
 
@@ -39,26 +40,27 @@ def vue_recherche_collaborateur():
 def vue_modification_collaborateur(collaborateur):
     nom = demander_modification(
         "Nom",
-        collaborateur.nom_complet,
-        "Veuillez saisir le nom et prénom du client.\n - ",
+        collaborateur.nom,
+        "Veuillez saisir le nom et prénom du collaborateur.\n - ",
         lambda nom: re.match(r"^[a-zA-Z\s]{2,150}$", nom)
     )
 
     email = demander_modification(
         "Email",
         collaborateur.email,
-        "Veuillez saisir l'email du client:\n - ",
+        "Veuillez saisir l'email du collaborateur:\n - ",
         lambda mail: mail != ""
     )
 
-    password = demander_modification(
-        "Mot de passe",
-        collaborateur.password,
-        "Veuillez saisir le mot de passe:\n - ",
-        lambda password: re.match(r"^\+\d+$", password)
-    )
+    print("Voulez-vous modifier le mot de passe ?")
+    choix = choix_modification()
+    if choix:
+        password = verification_input("Veuillez saisir le mot de passe:\n - ", lambda password: password != "")
+    else:
+        password = collaborateur.password
 
-    print(f"\nRole actuel: {collaborateur.role}")
+
+    print(f"\nRole actuel: {collaborateur.role.value}")
     choix = choix_modification()
     if choix:
         role = choix_role()

@@ -1,7 +1,8 @@
 from models.models import Evenement
+from datetime import datetime
 from models.models_managment import verification_role
 from models.models import EnumPermission as EP
-from controleur_client import recherche_client
+from controleur.controleur_client import recherche_client
 from vue.vue import simple_print, vue_affichage_informations
 from vue.vue_menu import menu_choix
 from vue.vue_evenement import(
@@ -31,7 +32,7 @@ def creation_evenement(collaborateur, session):
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
-        client = recherche_client()
+        client = recherche_client(session)
         if client is None:
             simple_print("Client introuvable.")
             return
@@ -43,11 +44,11 @@ def creation_evenement(collaborateur, session):
                 name_event = infos_evenement["nom"],
                 id_client = client.id,
                 id_collaborateur = collaborateur.id,
-                event_date_start = infos_evenement["date debut"],
-                event_date_stop = infos_evenement["date fin"],
+                event_date_start = datetime.strptime(infos_evenement["date debut"], "%d/%m/%Y").date(),
+                event_date_stop = datetime.strptime(infos_evenement["date fin"], "%d/%m/%Y").date(),
                 location = infos_evenement["location"],
                 attente = int(infos_evenement["attente"]),
-                note = infos_evenement["notes"]
+                note = infos_evenement["note"]
                 )
             session.add(nouvel_evenement)
             session.commit()
@@ -109,12 +110,12 @@ def modification_evenement(collaborateur, session):
         try:
             modification = vue_modification_evenement(evenement)
 
-            evenement.name_event = modification["name_event"]
-            evenement.id_client = int(modification["id_client"])
-            evenement.id_collaborateur = int(modification["id_collaborateur"])
-            evenement.event_date_start = modification["date_start"]
-            evenement.event_date_stop = modification["date_stop"]
-            evenement.id_support_contrat= int(modification["id_support_contrat"])
+            evenement.name_event = modification["nom"]
+            evenement.id_client = int(modification["ID client"])
+            evenement.id_collaborateur = int(modification["ID collaborateur"])
+            evenement.event_date_start = datetime.strptime(modification["date debut"], "%d/%m/%Y").date()
+            evenement.event_date_stop = datetime.strptime(modification["date fin"], "%d/%m/%Y").date()
+            evenement.id_support_contrat= int(modification["ID collaborateur support"])
             evenement.location = modification["location"]
             evenement.attente = int(modification["attente"])
             evenement.note = modification["note"]

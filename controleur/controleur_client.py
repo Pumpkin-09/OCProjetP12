@@ -81,6 +81,8 @@ def modification_client(collaborateur, session):
     authorisation = verification_role(action, user_role)
     if authorisation:
         client = recherche_client(session)
+        if client is None:
+            return
 
         try:
             modification = vue_modification_client(client)

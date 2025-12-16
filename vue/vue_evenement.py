@@ -40,6 +40,13 @@ def vue_creation_evenement():
 
 
 def vue_modification_evenement(evenement):
+    nom_evenement = demander_modification(
+        "Nom de l'événement",
+        evenement.name_event,
+        "Veuillez saisir un nom pour l'événement:\n - ",
+        lambda nom: re.match(r"^[a-zA-Z\s]{2,150}$", nom)
+    )
+
     client = demander_modification(
         "ID client",
         evenement.id_client,
@@ -56,7 +63,7 @@ def vue_modification_evenement(evenement):
 
     collaborateur_support = demander_modification(
         "ID collaborateur support",
-        evenement.id_collaborateur_support,
+        evenement.id_support_contrat,
         "Veuillez saisir l'ID du collaborateur support:\n - ",
         lambda id_collaborateur_support: re.match(r"^\d+$", id_collaborateur_support)
     )
@@ -97,11 +104,12 @@ def vue_modification_evenement(evenement):
     )
 
     infos_evenement = {
-        "id_client": client,
-        "id_collaborateur": collaborateur,
-        "id_collaborateur_support": collaborateur_support,
-        "date_debut": date_debut,
-        "date_fin": date_fin,
+        "nom": nom_evenement,
+        "ID client": client,
+        "ID collaborateur": collaborateur,
+        "ID collaborateur support": collaborateur_support,
+        "date debut": date_debut,
+        "date fin": date_fin,
         "location": location,
         "attente": attente,
         "note": note

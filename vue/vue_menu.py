@@ -1,15 +1,14 @@
 import re
-from vue.vue import clear_terminal, vue_choix
+from vue.vue import vue_choix
 
 
 def menu():
 
-    clear_terminal()
-    print("--------------Menu--------------")
+    print("\n\n\n--------------Menu--------------")
     print("     Choisissez une option:")
     print("Pour le menu client, veuillez saisir 1")
     print("Pour le menu événement, veuillez saisir 2")
-    print("Pour le menu Contrat, veuillez saisir 3")
+    print("Pour le menu contrat, veuillez saisir 3")
     print("Pour le menu collaborateur, veuillez saisir 4")
     choix = vue_choix(4)
     print("---------------------------------")
@@ -19,8 +18,7 @@ def menu():
 
 def menu_choix(item):
 
-    clear_terminal()
-    print(f"-----------Menu {item}-----------")
+    print(f"\n\n\n-----------Menu {item}-----------")
     print("     Choisissez une option:")
     print(f"Pour afficher les {item}, veuillez saisir 1")
     print(f"Pour crée un {item}, veuillez saisir 2")
@@ -33,8 +31,7 @@ def menu_choix(item):
 
 def menu_choix_collaborateur():
 
-    clear_terminal()
-    print("-----------Menu collaborateur-----------")
+    print("\n\n\n-----------Menu collaborateur-----------")
     print("     Choisissez une option:")
     print("Pour le afficher les collaborateurs, veuillez saisir 1")
     print("Pour crée un collaborateur, veuillez saisir 2")

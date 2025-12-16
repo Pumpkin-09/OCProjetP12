@@ -19,14 +19,12 @@ def vue_choix_recherche_contrat():
 
 def vue_creation_contrat():
     infos_contrat = {}
-    print("Veuillez saisir l'ID du collaborateur:")
-    infos_contrat["ID collaborateur"] = verification_input(" - ", lambda id_collaborateur: re.match(r"^\d+$", id_collaborateur))
 
     print("Veuillez saisir le montant total, en € avec un . pour les décimales:")
-    infos_contrat["Montant total"] = verification_input(" - ", lambda montant_tot: re.match(r"^\d+([.]\d{1,2})?$", montant_tot))
+    infos_contrat["montant total"] = verification_input(" - ", lambda montant_tot: re.match(r"^\d+([.]\d{1,2})?$", montant_tot))
     
     print("Veuillez saisir le montant qu'il reste à payer, en € avec un . pour les décimales:")
-    infos_contrat["Reste a payer"] = verification_input(" - ", lambda montant_rest: re.match(r"^\d+([.]\d{1,2})?$", montant_rest))
+    infos_contrat["reste a payer"] = verification_input(" - ", lambda montant_rest: re.match(r"^\d+([.]\d{1,2})?$", montant_rest))
 
     print("Statut du contrat :")
     while True:

@@ -12,10 +12,10 @@ def vue_recherche_client():
 def vue_creation_client():
     print("Veuillez saisir le nom et prénom du client.")
     infos_client = {
-    "nom_complet": verification_input(" - ", lambda nom: re.match(r"^[a-zA-Z\s]{2,150}$", nom)),
+    "nom": verification_input(" - ", lambda nom: re.match(r"^[a-zA-Z\s]{2,150}$", nom)),
     "email": verification_input("Veuillez saisir l'email du client':\n - ", lambda mail: mail != ""),
     "telephone": verification_input("Veuillez saisir le numero de telephone du client:\n - ", lambda telephone: re.match(r"^\+\d+$", telephone)),
-    "nom_entreprise": verification_input("Veuillez saisir le nom de l'entreprise:\n - ", lambda entreprise: entreprise != "")
+    "entreprise": verification_input("Veuillez saisir le nom de l'entreprise:\n - ", lambda entreprise: entreprise != "")
     }
     return infos_client
 

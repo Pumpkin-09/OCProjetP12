@@ -31,7 +31,7 @@ def creation_contrat(collaborateur, session):
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
-        client = recherche_client()
+        client = recherche_client(session)
         if client is None:
             simple_print("Création de contrat annulée.")
             return
@@ -40,7 +40,7 @@ def creation_contrat(collaborateur, session):
         try:
             nouveau_contrat = Contrat(
                 id_client = client.id,
-                id_collaborateur = int(infos_contrat["id collaborateur"]),
+                id_collaborateur = client.id_collaborateur,
                 montant_total = float(infos_contrat["montant total"]),
                 reste_a_payer = float(infos_contrat["reste a payer"]),
                 status_contrat = infos_contrat["statut contrat"]
