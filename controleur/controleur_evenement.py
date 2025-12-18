@@ -107,6 +107,10 @@ def modification_evenement(collaborateur, session):
             choix_evenement_str = vue_choix_evenement(None)
             choix_evenement = int(choix_evenement_str)
             evenement = session.query(Evenement).filter(Evenement.id == choix_evenement).first()
+            if evenement is None:
+                simple_print("Aucun événement trouvé.")
+                return
+
         try:
             modification = vue_modification_evenement(evenement)
 

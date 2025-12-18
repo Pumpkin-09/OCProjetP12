@@ -4,7 +4,7 @@ import re
 
 def vue_recherche_client():
     clear_terminal()
-    print("Veuillez saisir le nom et prénom du client à chercer:")
+    print("Veuillez saisir le nom et prénom du client à chercher:")
     recherche_client = verification_input(" - ", lambda nom: re.match(r"^[a-zA-Z\s]{2,150}$", nom))
     return recherche_client
 

@@ -32,7 +32,7 @@ def vue_creation_collaborateur():
 
 def vue_recherche_collaborateur():
     clear_terminal()
-    print("Veuillez saisir le nom et prénom du collaborateur à chercer:")
+    print("Veuillez saisir le nom et prénom du collaborateur à chercher:")
     recherche_collaborateur = verification_input(" - ", lambda nom: re.match(r"^[a-zA-Z\s]{2,150}$", nom))
     return recherche_collaborateur
 

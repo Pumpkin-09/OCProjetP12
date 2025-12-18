@@ -105,6 +105,9 @@ def modification_contrat(collaborateur, session):
             choix_contrat_str = vue_choix_contrat(None)
             choix_contrat = int(choix_contrat_str)
             contrat = session.query(Contrat).filter(Contrat.id == choix_contrat).first()
+            if contrat is None:
+                simple_print("Aucun contrat trouvé.")
+                return
         
         try:
             modification = vue_modification_contrat(contrat)

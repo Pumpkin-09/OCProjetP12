@@ -32,7 +32,5 @@ def creation_collaborateur_admin(session):
         simple_print(f"Erreur lors de la création:/n - {e}")
 
 
-"""
 if __name__ == "__main__":
     creation_collaborateur_admin(session)
-"""

@@ -1,4 +1,4 @@
-from models.models import Collaborateur
+from models.models import Collaborateur, Client, Contrat, Evenement
 from models.models_managment import verification_role, hashing_password
 from vue.vue import simple_print, vue_affichage_informations
 from sqlalchemy import func
@@ -98,18 +98,44 @@ def suppression_collaborateur(collaborateur, session):
     user_role = collaborateur.role
     authorisation = verification_role(action, user_role)
     if authorisation:
-        delete_collaborateur = recherche_collaborateur()
+        delete_collaborateur = recherche_collaborateur(session)
         if delete_collaborateur is None:
             simple_print("Ce collaborateur n'existe pas.")
             return
         if delete_collaborateur.id == collaborateur.id:
             simple_print("Vous ne pouvez pas supprimer votre propre compte")
             return
-        
+
+        clients = session.query(Client).filter(Client.id_collaborateur == delete_collaborateur.id).all()
+        contrats = session.query(Contrat).filter(Contrat.id_collaborateur == delete_collaborateur.id).all()
+        evenements = session.query(Evenement).filter(Evenement.id_collaborateur == delete_collaborateur.id).all()
+        collaborateur_evenement = session.query(Evenement).filter(Evenement.id_support_contrat == delete_collaborateur.id).all()
+        nombre_liens = len(clients) + len(contrats) + len(evenements) + len(collaborateur_evenement)
+        if nombre_liens > 0:
+            simple_print(f"Impossible de supprimer ce collaborateur car il est lié à :")
+            if len(clients) > 0:
+                simple_print(f" {len(clients)} clients")
+                for client in clients:
+                    simple_print(f"  - client: ID: {client.id}, nom: {client.nom_complet}")
+
+            if len(contrats) > 0:
+                simple_print(f" {len(contrats)} contrats")
+                for contrat in contrats:
+                    simple_print(f"  - contrat: ID: {contrat.id}")
+
+            if len(evenements) > 0:
+                simple_print(f" {len(evenements)} événements")
+                for evenement in evenements:
+                    simple_print(f"  - événement: ID: {evenement.id}, nom: {evenement.name_event}")
+            if len(collaborateur_evenement) > 0:
+                simple_print(f" {len(collaborateur_evenement)} événements en tant que collaborateur support")
+                for evenement in collaborateur_evenement:
+                    simple_print(f"  - événement: ID: {evenement.id}, nom: {evenement.name_event}")
+            return
         try:
             session.delete(delete_collaborateur)
             session.commit()
-            simple_print(f"Collaborateur '{delete_collaborateur['nom']}' supprimé avec succès")
+            simple_print(f"Collaborateur '{delete_collaborateur.nom}' supprimé avec succès")
 
         except Exception as e:
             session.rollback()
