@@ -84,36 +84,21 @@ EOF
 nano .env  # ou vim .env, ou avec votre éditeur préféré
 ```
 
-### 6. Créer un premier utilisateur "gestion"
+### 6. Lancer l'application
+Lors de votre tout premier lancement de l'application, un utilisateur "Admin" de l'équipe gestion sera créé automatiquement pour vous permettre de vous connecter et d'utiliser les fonctionnalités implémentées.
+Lors du lancement avec la commande :
 
-Afin de pouvoir accéder à l'application, il vous faut créer un premier utilisateur. Pour pouvoir créer d'autres utilisateurs par la suite, il doit impérativement appartenir à l'équipe gestion.
-
-Pour ce faire, nous avons créé une petite fonction afin de faciliter cette création.
-
-**Dans le terminal, taper la commande suivante :**
-```bash
-python creation_admin.py
-```
-
-Vous verrez apparaître le message : `Collaborateur Admin créé avec succès`
-
-**Il ne vous reste plus qu'à supprimer le fichier :**
-```bash
-rm creation_admin.py  # Linux/Mac
-# ou
-del creation_admin.py  # Windows
-```
-
-### 7. Lancer l'application
 ```bash
 python main.py
 ```
 
-Il vous sera demandé de vous connecter. Utilisez les identifiants de l'utilisateur admin précédemment créé :
+Vous verrez apparaître le message : `Collaborateur Admin créé avec succès`
+
+Il vous sera alors demandé de vous connecter. Utilisez les identifiants de l'utilisateur admin précédemment créé :
 - **Email :** admin@epicevents.com
 - **Mot de passe :** admin123
 
-Une fois connecté, vous pouvez changer les informations de votre compte "admin".
+⚠️ Important : Pour des raisons de sécurité, pensez à modifier le mot de passe de l'administrateur dès votre première connexion.
 
 ## 📋 Utilisation
 
