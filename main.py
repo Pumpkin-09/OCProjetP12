@@ -1,9 +1,10 @@
 from database import SessionLocal
 from models.models_managment import user_connexion, user_deconnexion
+from models.models import Collaborateur
 from vue.vue import simple_print
 from vue.vue_menu import menu, quitter
 from controleur.controleur_client import controleur_menu_client
-from controleur.controleur_collaborateur import controleur_menu_collaborateur
+from controleur.controleur_collaborateur import controleur_menu_collaborateur, creation_first_collaborateur
 from controleur.controleur_contrat import controleur_menu_contrat
 from controleur.controleur_evenement import controleur_menu_evenement
 
@@ -11,6 +12,9 @@ from controleur.controleur_evenement import controleur_menu_evenement
 def main():
     session = SessionLocal()
     collaborateur = False
+    collaborateur_existe = session.query(Collaborateur).exists().scalar()
+    if not collaborateur_existe:
+        creation_first_collaborateur(session)
 
     while not collaborateur:
         simple_print("Vous devez être connecté pour utiliser cette application")
