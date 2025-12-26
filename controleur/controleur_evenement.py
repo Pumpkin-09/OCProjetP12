@@ -70,7 +70,7 @@ def affichage_evenements(collaborateur, session):
         if choix_evenement == 2:
             evenements = session.query(Evenement).filter(Evenement.id_collaborateur == collaborateur.id).all()
         if choix_evenement == 3:
-            evenements = session.query(Evenement).filter(Evenement.id_support_contrat == False).all()
+            evenements = session.query(Evenement).filter(Evenement.id_support_contrat.is_(None)).all()
         if choix_evenement == None:
             return
         if evenements:
@@ -113,12 +113,21 @@ def modification_evenement(collaborateur, session):
 
         try:
             modification = vue_modification_evenement(evenement)
+            if isinstance(modification["date debut"], str):
+                date_start = datetime.strptime(modification["date debut"], "%d/%m/%Y").date()
+            else:
+                date_start = modification["date debut"]
+
+            if isinstance(modification["date fin"], str):
+                date_stop = datetime.strptime(modification["date fin"], "%d/%m/%Y").date()
+            else:
+                date_stop = modification["date fin"]
 
             evenement.name_event = modification["nom"]
             evenement.id_client = int(modification["ID client"])
             evenement.id_collaborateur = int(modification["ID collaborateur"])
-            evenement.event_date_start = datetime.strptime(modification["date debut"], "%d/%m/%Y").date()
-            evenement.event_date_stop = datetime.strptime(modification["date fin"], "%d/%m/%Y").date()
+            evenement.event_date_start = date_start
+            evenement.event_date_stop = date_stop
             evenement.id_support_contrat= int(modification["ID collaborateur support"])
             evenement.location = modification["location"]
             evenement.attente = int(modification["attente"])
