@@ -12,7 +12,7 @@ from controleur.controleur_evenement import controleur_menu_evenement
 def main():
     session = SessionLocal()
     collaborateur = False
-    collaborateur_existe = session.query(Collaborateur).exists().scalar()
+    collaborateur_existe = session.query(Collaborateur).first()
     if not collaborateur_existe:
         creation_first_collaborateur(session)
 

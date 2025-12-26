@@ -65,9 +65,9 @@ def affichage_contrats(collaborateur, session):
         if choix_contrat == 2:
             contrats = session.query(Contrat).filter(Contrat.id_collaborateur == collaborateur.id).all()
         if choix_contrat == 3:
-            contrats = session.query(Contrat).filter(Contrat.reste_a_payer > 0).all()
-        if choix_contrat == 4:
             contrats = session.query(Contrat).filter(Contrat.status_contrat == False).all()
+        if choix_contrat == 4:
+            contrats = session.query(Contrat).filter(Contrat.reste_a_payer > 0).all()
         if choix_contrat == None:
             return
 
